@@ -1,55 +1,77 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useForm } from 'react-hook-form'
 import { navigate } from '@reach/router'
 
 import logoJungle from '_assets/images/jungle.png'
-import { getPerfectBMW } from '_modules/car/actions'
+import { login } from '_modules/authentication/actions'
+import { getUser } from '_modules/user/actions'
 
 import styles from './styles.css'
 
+export const CANNOT_FIND_USER_ERROR = 'Cannot find user'
+
 const App = () => {
-  // const car = useSelector(state => state.car)
+  const [isLogged, setIsLogged] = useState(false)
   const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false)
+  const [isInvalidUser, setIsInvalidUser] = useState(false)
+  const { register, handleSubmit, errors } = useForm()
+
+  const onSubmit = useCallback(
+    async data => {
+      setLoading(true)
+      const response = await dispatch(login(data))
+      setLoading(false)
+      if (response?.action?.payload?.accessToken) {
+        setIsLogged(true)
+      } else {
+        setIsInvalidUser(true)
+      }
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
-    dispatch(getPerfectBMW())
-  }, [dispatch])
-
-  function handleSubmit() {
-    navigate('/user')
-  }
+    if (isLogged) {
+      dispatch(getUser())
+      navigate('/users')
+    }
+  }, [dispatch, isLogged])
 
   return (
     <div className={styles.card}>
       <img src={logoJungle} alt="Logo Jungle Devs" className={styles.logo} />
-      {/* <img
-        src="_assets/images/jungle-devs-logo.png"
-        srcSet="_assets/images/jungle-devs-logo@2x.png 2x,
-        _assets/images/jungle-devs-logo@3x.png 3x"
-        alt="Logo Jungle Devs"
-        className={styles.logo}
-      /> */}
-
-      <form onSubmit={handleSubmit}>
-        <input placeholder="Email" className={styles.bounds} />
-        <input placeholder="Password" type="password" className={styles.bounds} />
-        <button type="submit">Login</button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          placeholder="Email"
+          id="email"
+          name="email"
+          ref={register({
+            required: true,
+          })}
+          className={styles.bounds}
+        />
+        {errors.email && <p className={styles.invalidUserError}>Email is a required field</p>}
+        <input
+          placeholder="Password"
+          id="password"
+          name="password"
+          ref={register({
+            required: 'Senha é obrigatória',
+          })}
+          type="password"
+          className={styles.bounds}
+          error={typeof errors.password === 'object'}
+          helperText={errors?.password?.message}
+        />
+        {errors.password && <p className={styles.invalidUserError}>Password is a required field</p>}
+        {isInvalidUser && <p className={styles.invalidUserError}>Invalid email or password</p>}
+        <button type="submit" loading={loading}>
+          Login
+        </button>
       </form>
     </div>
-    // <div className={styles.App}>
-    //   <header className={styles['App-header']}>
-    //     <img src={BMW} alt="BMW" className={styles['App-logo']} />
-    //     <h1 className={styles['App-title']}>Jungle Devs Boilerplate</h1>
-    //   </header>
-
-    //   {car.marca ? (
-    //     <p
-    //       className={styles['App-intro']}
-    //     >{`The ${car.marca} ${car.modelo} ${car.anoModelo} - ${car.combustivel} (FIPE ${car.codigoFipe}) was evaluated at ${car.valor}`}</p>
-    //   ) : (
-    //     <p className={styles['App-intro']}>Loading...</p>
-    //   )}
-    // </div>
   )
 }
 

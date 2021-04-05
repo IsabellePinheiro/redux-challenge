@@ -7,8 +7,8 @@ import NotFoundPage from '_views/not-found'
 
 const Router = () => (
   <ReachRouter>
-    <App path="/" />
-    <Main path="/user" />
+    <App path="/login" />
+    <Main path="/users" />
     <NotFoundPage default />
   </ReachRouter>
 )

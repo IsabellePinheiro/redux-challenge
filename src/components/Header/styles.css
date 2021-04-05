@@ -4,6 +4,7 @@ header {
   margin: 0 0 75px;
   padding: 20px 120px 19px;
   background-color: #009b3a;
+  justify-content: space-between;
 }
 
 img {
@@ -46,4 +47,10 @@ button:enabled {
   font-size: 14px;
   font-weight: bold;
   color: #fff;
+  padding: 11px 10.8px 9px 10px;
+  box-shadow: none;
+}
+
+.logoSvg {
+  fill: #fff;
 }
