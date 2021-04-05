@@ -1,0 +1,56 @@
+header {
+  display: flex;
+  height: 80px;
+  margin: 0 0 75px;
+  padding: 20px 120px 19px;
+  background-color: #009b3a;
+  justify-content: space-between;
+}
+
+img {
+  width: 133.3px;
+  height: 32px;
+  margin: 16px 10px 16px 0;
+  padding: 0 2.7px 0 0;
+  object-fit: contain;
+}
+
+button:enabled {
+  cursor: pointer;
+}
+
+.save {
+  width: 138px;
+  height: 40px;
+  margin: 12px 0 0 8px;
+  padding: 8px 20px;
+  border-radius: 24px;
+  background-color: #00ac45;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.71;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.save:disabled {
+  background-color: #c8c8c8;
+}
+
+.linkSignOut {
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  padding: 11px 10.8px 9px 10px;
+  box-shadow: none;
+}
+
+.logoSvg {
+  fill: #fff;
+}
